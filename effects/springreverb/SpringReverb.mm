@@ -5,7 +5,7 @@
 //  Copyright © 2015 Aliaksandr Tsurko. All rights reserved.
 //
 
-#import "SpringReverbUGen.hpp"
+#import "SpringReverb.hpp"
 
 namespace ataudioprocessing {
    void SpringReverbUGen::init(sample_t sr, int chnum, int blockSize) {

@@ -14,12 +14,6 @@
 #include "../Globals.hpp"
 
 namespace ataudioprocessing {
-   typedef enum {
-      LP = 0,
-      HP = 1,
-      BP = 2
-   } FilterType;
-
    // MARK: Filter definition
 
    class FMSVF : public Generator {

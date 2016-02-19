@@ -7,7 +7,7 @@
 
 #include "ShatteringFilter.hpp"
 
-namespace ataudiopocessing {
+namespace ataudioprocessing {
    void ShatteringFilter::init(sample_t sampleRate, int chnum, int blockSize) {
        Generator::init(sampleRate, chnum, blockSize);
 
