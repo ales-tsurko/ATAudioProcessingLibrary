@@ -12,7 +12,7 @@
 #include <math.h>
 #include <vector>
 #include "../../Globals.hpp"
-#include "../../filters/TwoPoleSVF.hpp"
+#include "../../filters/TwoPoleSVFS.hpp"
 #include "../../filters/AllpassFilter.hpp"
 
 namespace ataudioprocessing {
@@ -41,7 +41,7 @@ namespace ataudioprocessing {
       AllPassFilter transverseReflectionFilter;
       AllPassFilter longitudinalFilter;
       AllPassFilter reflectionFilter;
-      TwoPoleSVF dampingFilter;
+      TwoPoleSVFS dampingFilter;
    };
 } /* ataudioprocessing */
 

@@ -17,7 +17,7 @@
 #import <Accelerate/Accelerate.h>
 
 namespace ataudioprocessing {
-   class SpringReverbUGen : public Generator {
+   class SpringReverb : public Generator {
        OnePoleLPHP highAttenuationFilter;
        OnePoleLPHP transducerFilter;
        ShatteringFilter shattering;
@@ -38,7 +38,7 @@ namespace ataudioprocessing {
 
        void setDensity(sample_t newDensity);
 
-       sample_vec_t calculateBlock(sample_t *input,
+       sample_vec_t calculateBlock(sample_vec_t input,
                                    sample_t size,
                                    sample_t density,
                                    sample_t drywet);

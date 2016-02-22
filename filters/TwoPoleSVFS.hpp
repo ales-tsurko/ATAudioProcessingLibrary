@@ -11,7 +11,7 @@
 #include "../Globals.hpp"
 
 namespace ataudioprocessing {
-    class TwoPoleSVF: public Generator {
+    class TwoPoleSVFS: public Generator {
     public:
         
         sample_t out = 0.0;

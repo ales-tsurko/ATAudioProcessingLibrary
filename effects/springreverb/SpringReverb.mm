@@ -8,7 +8,7 @@
 #import "SpringReverb.hpp"
 
 namespace ataudioprocessing {
-   void SpringReverbUGen::init(sample_t sr, int chnum, int blockSize) {
+   void SpringReverb::init(sample_t sr, int chnum, int blockSize) {
        Generator::init(sr, chnum, blockSize);
 
        highAttenuation = 3767.0; // in Hz
@@ -139,7 +139,7 @@ namespace ataudioprocessing {
 
    }
 
-   sample_vec_t SpringReverbUGen::calculateBlock(sample_t *input,
+   sample_vec_t SpringReverb::calculateBlock(sample_vec_t input,
                                                  sample_t size,
                                                  sample_t density,
                                                  sample_t drywet) {
@@ -175,7 +175,7 @@ namespace ataudioprocessing {
        dryMul*=0.3;
        wetMul*=0.5;
        sample_t dry[calculationBlockSize];
-       vDSP_vsmul(input, 1, &dryMul, dry, 1, calculationBlockSize);
+       vDSP_vsmul(&input[0], 1, &dryMul, dry, 1, calculationBlockSize);
        vDSP_vsmul(wet, 1, &wetMul, wet, 1, calculationBlockSize);
 
        sample_t outputMul = 0.5;

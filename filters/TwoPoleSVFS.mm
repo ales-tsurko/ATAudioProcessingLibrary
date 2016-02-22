@@ -7,15 +7,15 @@
 //
 
 #include <stdio.h>
-#include "TwoPoleSVF.hpp"
+#include "TwoPoleSVFS.hpp"
 
 namespace ataudioprocessing {
-    void TwoPoleSVF::init(sample_t sampleRate, int chnum, int blockSize) {
+    void TwoPoleSVFS::init(sample_t sampleRate, int chnum, int blockSize) {
         Generator::init(sampleRate, chnum, blockSize);
         setParameters(LP, 250.0, 0.1);
     }
     
-    void TwoPoleSVF::setParameters(FilterType newType, sample_t newFreq, sample_t newResonance) {
+    void TwoPoleSVFS::setParameters(FilterType newType, sample_t newFreq, sample_t newResonance) {
         type = newType;
         frequency = newFreq;
         resonance = 1.0-newResonance;
@@ -25,7 +25,7 @@ namespace ataudioprocessing {
         D = twoRes + cutoff;
     }
     
-    sample_t TwoPoleSVF::generateSample(sample_t input) {
+    sample_t TwoPoleSVFS::generateSample(sample_t input) {
         hp_out = (input - (lp_out + bp_out*D)) / (D*cutoff + 1);
         bp_out += hp_out*cutoff;
         lp_out += bp_out*cutoff;
