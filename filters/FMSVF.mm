@@ -29,14 +29,14 @@ namespace ataudioprocessing {
          lfo_amount = lfoAmount;
          type = filterType;
 
-         float phaseArr[calculationBlockSize];
-         float lfo[calculationBlockSize];
-         float frequencyModulation[calculationBlockSize];
-         float cutoff[calculationBlockSize];
-         float D[calculationBlockSize];
+         sample_t phaseArr[calculationBlockSize];
+         sample_t lfo[calculationBlockSize];
+         sample_t frequencyModulation[calculationBlockSize];
+         sample_t cutoff[calculationBlockSize];
+         sample_t D[calculationBlockSize];
 
-         float ones[calculationBlockSize];
-         float phaseMax = 1.0;
+         sample_t ones[calculationBlockSize];
+         sample_t phaseMax = 1.0;
 
          vDSP_vfill(&phaseMax, ones, 1, calculationBlockSize);
          vDSP_vramp(&lfo_phase, &lfo_incr, phaseArr, 1, calculationBlockSize);

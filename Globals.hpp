@@ -75,7 +75,7 @@ namespace ataudioprocessing {
         sample_t output;
         
         sample_t smooth(sample_t input, sample_t amount) {
-            sample_t smoothing = clamp(amount, 0.0f, 1.0f);
+            sample_t smoothing = 1.0 - clamp(amount, 0.0f, 1.0f);
             output = output * (1.0 - smoothing) + input * smoothing;
             return output;
         }
