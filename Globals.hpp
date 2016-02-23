@@ -24,10 +24,12 @@ namespace ataudioprocessing {
     const sample_t twopi = 2.0 * M_PI;
     
     typedef enum {
-        LP = 0,
-        HP = 1,
-        BP = 2
+        LP, HP, BP
     } FilterType;
+    
+    typedef enum {
+        Saw, Tri, Square, Sin
+    } LFOType;
     
     template <typename T>
     inline T midiToFreq(T noteNumber) {
@@ -68,6 +70,16 @@ namespace ataudioprocessing {
     inline T dBToAmp(T input) {
         return pow((T)10.0, input * (T)0.05);;
     }
+    
+    typedef struct Smoother {
+        sample_t output;
+        
+        sample_t smooth(sample_t input, sample_t amount) {
+            sample_t smoothing = clamp(amount, 0.0f, 1.0f);
+            output = output * (1.0 - smoothing) + input * smoothing;
+            return output;
+        }
+    } Smoother;
     
     //===============
     // Base objects
