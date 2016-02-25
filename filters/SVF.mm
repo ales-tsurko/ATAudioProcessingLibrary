@@ -8,7 +8,7 @@
 #import "Accelerate/Accelerate.h"
 #include "SVF.hpp"
 
-namespace ataudioprocessing {    
+namespace ataudioprocessing {
     sample_vec_t SVF::calculateBlock(sample_vec_t input,
                                      sample_t frequency,
                                      sample_t resonance,
@@ -80,10 +80,22 @@ namespace ataudioprocessing {
         
         for (int frameIndex = 0; frameIndex < calculationBlockSize; ++frameIndex) {
             res[frameIndex] = 1.0 - resonance[frameIndex];
-            cutoff[frameIndex] = tanf(fmin((M_PI / sr) * frequency[frameIndex], 1.50845));
-            twoRes[frameIndex] = res[frameIndex] * 2.0;
-            D[frameIndex] = twoRes[frameIndex] + cutoff[frameIndex];
         }
+        
+        sample_t angf = M_PI/sr;
+        
+        vDSP_vsmul(&frequency[0], 1, &angf, cutoff, 1, calculationBlockSize);
+        
+        sample_t low = 0.0;
+        sample_t high = 1.50845;
+        vDSP_vclip(cutoff, 1, &low, &high, cutoff, 1, calculationBlockSize);
+        
+        vvtanf(cutoff, cutoff, &calculationBlockSize);
+        
+        sample_t mul = 2.0;
+        vDSP_vsmul(res, 1, &mul, twoRes, 1, calculationBlockSize);
+        
+        vDSP_vadd(twoRes, 1, cutoff, 1, D, 1, calculationBlockSize);
         
         for (int frameIndex = 0; frameIndex < calculationBlockSize; ++frameIndex) {
             sample_t prev_out, curr_out;
