@@ -74,11 +74,16 @@ namespace ataudioprocessing {
     typedef struct Smoother {
         sample_t output;
         
-        sample_t smooth(sample_t input, sample_t amount) {
-            sample_t smoothing = 1.0 - clamp(amount, 0.0f, 1.0f);
+        void setAmount(sample_t amount) {
+            smoothing = 1.0 - clamp(amount, 0.0f, 1.0f);
+        }
+        
+        sample_t smooth(sample_t input) {
             output = output * (1.0 - smoothing) + input * smoothing;
             return output;
         }
+    private:
+        sample_t smoothing = 0.1;
     } Smoother;
     
     //===============
@@ -87,10 +92,13 @@ namespace ataudioprocessing {
     
     class Generator {
     public:
+        sample_vec_t output;
+        
         void init(sample_t sampleRate, int chnum, int blockSize) {
             sr = sampleRate;
             numberOfChannels = chnum;
             calculationBlockSize = blockSize;
+            output.resize(blockSize);
         }
         
     protected:

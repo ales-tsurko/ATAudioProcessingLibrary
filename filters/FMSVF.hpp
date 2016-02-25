@@ -1,12 +1,12 @@
 //
-//  FMSVF.hpp
+//  SVF.hpp
 //
 //  Created by Aliaksandr Tsurko on 12.01.16.
 //  Copyright © 2016 Aliaksandr Tsurko. All rights reserved.
 //
 
-#ifndef FMSVF_hpp
-#define FMSVF_hpp
+#ifndef SVF_hpp
+#define SVF_hpp
 
 #include <stdio.h>
 #include <math.h>
@@ -16,7 +16,7 @@
 namespace ataudioprocessing {
    // MARK: Filter definition
 
-   class FMSVF : public Generator {
+   class SVF : public Generator {
    public:
       sample_vec_t output;
 

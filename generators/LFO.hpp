@@ -14,26 +14,31 @@
 namespace ataudioprocessing {
     class LFO : public Generator {
     public:
-        sample_t output;
-        
-        sample_t generateCRSample(LFOType type,
-                                  sample_t frequency,
-                                  sample_t amount);
+        sample_vec_t calculateBlock(LFOType type,
+                                    sample_t frequency,
+                                    sample_t amplitude,
+                                    sample_t add);
         
     private:
         void generateSawSample(sample_t phase,
-                               sample_t amount);
+                               sample_t amplitude,
+                               sample_t add);
         
         void generateTriSample(sample_t phase,
-                               sample_t amount);
+                               sample_t amplitude,
+                               sample_t add);
         
         void generateSquareSample(sample_t phase,
-                                  sample_t amount);
+                                  sample_t amplitude,
+                                  sample_t add);
         
         void generateSinSample(sample_t phase,
-                               sample_t amount);
+                               sample_t amplitude,
+                               sample_t add);
         
         sample_t phase;
+        sample_t croutput;
+        Smoother smoother;
     };
 }
 
