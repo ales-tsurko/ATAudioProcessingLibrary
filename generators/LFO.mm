@@ -48,25 +48,29 @@ namespace ataudioprocessing {
     void LFO::generateSawSample(sample_t phase,
                                 sample_t amplitude,
                                 sample_t add) {
-        croutput = (phase * 2.0 - 1.0) * amplitude + add;
+        croutput = (phase * 2.0 - 1.0) * amplitude;
+        croutput += add;
     }
     
     void LFO::generateTriSample(sample_t phase,
                                 sample_t amplitude,
                                 sample_t add) {
-        croutput = (fabs(phase * 4.0 - 2.0) - 1.0) * amplitude + add;
+        croutput = (fabs(phase * 4.0 - 2.0) - 1.0) * amplitude;
+        croutput += add;
     }
     
     void LFO::generateSquareSample(sample_t phase,
                                    sample_t amplitude,
                                    sample_t add) {
         croutput = phase < 0.5 ? 1.0 : -1.0;
-        croutput *= amplitude + add;
+        croutput *= amplitude;
+        croutput += add;
     }
     
     void LFO::generateSinSample(sample_t phase,
                                 sample_t amplitude,
                                 sample_t add) {
-        croutput = sinf(phase*twopi)*amplitude + add;
+        croutput = sinf(phase*twopi)*amplitude;
+        croutput += add;
     }
 }

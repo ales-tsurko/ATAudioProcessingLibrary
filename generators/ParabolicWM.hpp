@@ -18,7 +18,6 @@
 namespace ataudioprocessing {
    class ParabolicWM : public Generator {
    public:
-       sample_vec_t output;
 
        void init(sample_t sampleRate, int chnum, int blockSize, int oversamplingFactor);
 
@@ -29,10 +28,15 @@ namespace ataudioprocessing {
        sample_t zphase = 0.0;
        sample_vec_t oversampledOutput;
        int oversampledBlockSize;
+       Smoother freqSmoother;
+       Smoother ampSmoother;
+       Smoother widthSmoother;
 
        sample_vec_t phase;
+       sample_vec_t ones;
 
        FIRLP decimationFilter;
+       sample_t oversampleRate;
    };   
 }
 

@@ -14,6 +14,7 @@
 namespace ataudioprocessing {
     class LFO : public Generator {
     public:
+        sample_t croutput;
         sample_vec_t calculateBlock(LFOType type,
                                     sample_t frequency,
                                     sample_t amplitude,
@@ -37,7 +38,6 @@ namespace ataudioprocessing {
                                sample_t add);
         
         sample_t phase;
-        sample_t croutput;
         Smoother smoother;
     };
 }
