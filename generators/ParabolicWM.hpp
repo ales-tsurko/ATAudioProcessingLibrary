@@ -22,6 +22,7 @@ namespace ataudioprocessing {
        void init(sample_t sampleRate, int chnum, int blockSize, int oversamplingFactor);
 
        sample_vec_t calculateBlock(sample_t frequency, sample_t width, sample_t amplitude);
+       sample_vec_t calculateBlock(sample_vec_t frequency, sample_vec_t width, sample_vec_t amplitude);
 
    private:
        int oversmplFactor;
@@ -31,6 +32,7 @@ namespace ataudioprocessing {
        Smoother freqSmoother;
        Smoother ampSmoother;
        Smoother widthSmoother;
+       FIRLP widthUpsamplingFilter;
 
        sample_vec_t phase;
        sample_vec_t ones;

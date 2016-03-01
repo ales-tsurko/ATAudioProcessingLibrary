@@ -63,7 +63,7 @@ namespace ataudioprocessing {
     inline T linearToLog(T input, T minIn, T maxIn, T minOut, T maxOut) {
         if (input <= minIn) return minOut;
         if (input >= maxIn) return maxOut;
-        return pow(maxOut/maxIn, (input-minIn)/(maxIn-minIn));
+        return pow(maxOut/minOut, (input-minIn)/(maxIn-minIn)) * minOut;
     }
     
     template <typename T>
