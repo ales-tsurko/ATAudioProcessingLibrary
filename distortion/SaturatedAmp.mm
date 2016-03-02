@@ -9,17 +9,6 @@
 #import <Accelerate/Accelerate.h>
 
 namespace ataudioprocessing {
-   SaturatedAmp::SaturatedAmp() : upsamplingFilters(NULL), decimationFilters(NULL) {}
-
-   SaturatedAmp::~SaturatedAmp() {
-       for (int channel = 0; channel < numberOfChannels; ++channel) {
-           delete upsamplingFilters[channel];
-           delete decimationFilters[channel];
-       }
-       delete [] upsamplingFilters;
-       delete [] decimationFilters;
-   }
-
    void SaturatedAmp::init(sample_t sampleRate,
                            int chnum,
                            int blockSize,
@@ -33,21 +22,14 @@ namespace ataudioprocessing {
        oversampledBuffer.resize(numberOfChannels, sample_vec_t(oversampledBufSize, 0.0));
 
        sample_t cutFreq = sampleRate*0.47;
-
-       upsamplingFilters = new FIRLP* [chnum];
-
-       for (int channel = 0; channel < chnum; ++channel) {
-           upsamplingFilters[channel] = new FIRLP();
-           upsamplingFilters[channel]->init(sampleRate*oversamplingFactor, chnum, blockSize*oversamplingFactor, cutFreq, 10);
-       }
-
-       decimationFilters = new FIRLP* [chnum];
+       
+       upsamplingFilters.resize(numberOfChannels);
+       decimationFilters.resize(numberOfChannels);
 
        for (int channel = 0; channel < chnum; ++channel) {
-           decimationFilters[channel] = new FIRLP();
-           decimationFilters[channel]->init(sampleRate*oversamplingFactor, chnum, blockSize*oversamplingFactor, cutFreq, 25);
+           upsamplingFilters[channel].init(sampleRate*oversamplingFactor, chnum, blockSize*oversamplingFactor, cutFreq, 10);
+           decimationFilters[channel].init(sampleRate*oversamplingFactor, chnum, blockSize*oversamplingFactor, cutFreq, 25);
        }
-
    }
 
    multich_sample_vec_t SaturatedAmp::calculateBlock(multich_sample_vec_t input,
@@ -67,14 +49,14 @@ namespace ataudioprocessing {
 
        // interpolation filter
        for (int channel = 0; channel < numberOfChannels; ++channel) {
-           upsamplingFilters[channel]->calculateBlock(oversampledBuffer[channel]);
+           upsamplingFilters[channel].calculateBlock(oversampledBuffer[channel]);
        }
 
        // saturation on upsampled table
        sample_t lim = 1.3333;
        for (int channel = 0; channel < numberOfChannels; ++channel) {
            for (int frameIndex = 0; frameIndex < oversampledBufSize; ++frameIndex) {
-               sample_t outSample = upsamplingFilters[channel]->output[frameIndex];
+               sample_t outSample = upsamplingFilters[channel].output[frameIndex];
 
                if (outSample > lim) {
                    outSample = 1.0;
@@ -91,12 +73,12 @@ namespace ataudioprocessing {
 
        // decimation
        for (int channel = 0; channel < numberOfChannels; ++channel) {
-           decimationFilters[channel]->calculateBlock(oversampledBuffer[channel]);
+           decimationFilters[channel].calculateBlock(oversampledBuffer[channel]);
 
            for (int frameIndex = 0; frameIndex < calculationBlockSize; ++frameIndex) {
                int frameOffset = frameIndex*oversmplFactor;
 
-               output[channel][frameIndex] = decimationFilters[channel]->output[frameOffset];
+               output[channel][frameIndex] = decimationFilters[channel].output[frameOffset];
            }
        }
 

@@ -32,7 +32,6 @@ namespace ataudioprocessing {
        Smoother freqSmoother;
        Smoother ampSmoother;
        Smoother widthSmoother;
-       FIRLP widthUpsamplingFilter;
 
        sample_vec_t phase;
        sample_vec_t ones;

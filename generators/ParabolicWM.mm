@@ -25,7 +25,6 @@ namespace ataudioprocessing {
         sample_t cuttoff = sampleRate * 0.47;
         
         decimationFilter.init(sampleRate*oversamplingFactor, chnum, oversampledBlockSize, cuttoff, 15);
-        widthUpsamplingFilter.init(sampleRate*oversmplFactor, chnum, oversampledBlockSize, cuttoff, 10);
         freqSmoother.setAmount(0.93);
         ampSmoother.setAmount(0.93);
         widthSmoother.setAmount(0.99);

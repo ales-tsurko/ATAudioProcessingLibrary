@@ -19,8 +19,6 @@ namespace ataudioprocessing {
     typedef std::vector<sample_t> sample_vec_t;
     typedef std::vector<std::vector<sample_t>> multich_sample_vec_t;
     
-    const double SAMPLE_RATE = 44100.0;
-    const AVAudioChannelCount NUM_OF_CHANNELS = 2;
     const sample_t twopi = 2.0 * M_PI;
     
     typedef enum {

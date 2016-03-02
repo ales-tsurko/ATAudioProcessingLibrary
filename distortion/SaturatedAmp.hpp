@@ -17,9 +17,6 @@ namespace ataudioprocessing {
    public:
        multich_sample_vec_t output;
 
-       SaturatedAmp();
-       ~SaturatedAmp();
-
        void init(sample_t sampleRate,
                  int chnum,
                  int blockSize,
@@ -30,8 +27,8 @@ namespace ataudioprocessing {
                                            sample_t outputAmp);
    private:
        int oversmplFactor;
-       FIRLP **upsamplingFilters;
-       FIRLP **decimationFilters;
+       std::vector<FIRLP> upsamplingFilters;
+       std::vector<FIRLP> decimationFilters;
        multich_sample_vec_t oversampledBuffer;
        size_t oversampledBufSize;
    };
