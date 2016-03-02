@@ -9,6 +9,12 @@
 #include "SVF.hpp"
 
 namespace ataudioprocessing {
+    void SVF::init(sample_t sampleRate, int chnum, int blockSize) {
+        Generator::init(sampleRate, chnum, blockSize);
+        
+        freqSmoother.setAmount(0.95);
+    }
+    
     sample_vec_t SVF::calculateBlock(sample_vec_t input,
                                      sample_t frequency,
                                      sample_t resonance,
@@ -77,14 +83,16 @@ namespace ataudioprocessing {
         sample_t cutoff[calculationBlockSize];
         sample_t twoRes[calculationBlockSize];
         sample_t D[calculationBlockSize];
+        sample_t smoothedFreq[calculationBlockSize];
         
         for (int frameIndex = 0; frameIndex < calculationBlockSize; ++frameIndex) {
             res[frameIndex] = 1.0 - resonance[frameIndex];
+            smoothedFreq[frameIndex] = freqSmoother.smooth(frequency[frameIndex]);
         }
         
         sample_t angf = M_PI/sr;
         
-        vDSP_vsmul(&frequency[0], 1, &angf, cutoff, 1, calculationBlockSize);
+        vDSP_vsmul(smoothedFreq, 1, &angf, cutoff, 1, calculationBlockSize);
         
         sample_t low = 0.0;
         sample_t high = 1.50845;

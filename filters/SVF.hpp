@@ -17,6 +17,8 @@ namespace ataudioprocessing {
     
     class SVF : public Generator {
     public:
+        void init(sample_t sampleRate, int chnum, int blockSize);
+        
         sample_vec_t calculateBlock(sample_vec_t input,
                                     sample_t frequency,
                                     sample_t resonance,
@@ -31,6 +33,7 @@ namespace ataudioprocessing {
         sample_t lp_out = 0.0;
         sample_t hp_out = 0.0;
         sample_t bp_out = 0.0;
+        Smoother freqSmoother;
         
         FilterType previousType = LP;
         FilterType testType = LP;
