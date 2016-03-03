@@ -44,7 +44,7 @@ namespace ataudioprocessing {
            memset(&oversampledBuffer[channel][0], 0, sizeof(sample_t) * oversampledBufSize);
 
            // input gain
-           vDSP_vsmul(&input[channel][0], 1, &inputMul, &oversampledBuffer[channel][0], 4, calculationBlockSize);
+           vDSP_vsmul(&input[channel][0], 1, &inputMul, &oversampledBuffer[channel][0], oversmplFactor, calculationBlockSize);
        }
 
        // interpolation filter
