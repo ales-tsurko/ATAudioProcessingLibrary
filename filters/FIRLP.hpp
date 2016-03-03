@@ -21,13 +21,13 @@ namespace ataudioprocessing {
       void init(sample_t sampleRate,
          int chnum,
          int blockSize,
-         sample_t cuttoff,
+         sample_t cutoff,
          int kernelSize);
 
          sample_vec_t calculateBlock(sample_vec_t input);
 
    private:
-         sample_t cuttoffRatio;
+         sample_t cutoffRatio;
          sample_vec_t filterKernel;
          int filterKernelSize;
          sample_vec_t ringBuf;

@@ -22,9 +22,9 @@ namespace ataudioprocessing {
         ones.resize(oversampledBlockSize);
         std::fill(ones.begin(), ones.end(), 1.0);
         
-        sample_t cuttoff = sampleRate * 0.47;
+        sample_t cutoff = sampleRate * 0.47;
         
-        decimationFilter.init(sampleRate*oversamplingFactor, chnum, oversampledBlockSize, cuttoff, 15);
+        decimationFilter.init(oversampleRate, chnum, oversampledBlockSize, cutoff, 15);
         freqSmoother.setAmount(0.93);
         ampSmoother.setAmount(0.93);
         widthSmoother.setAmount(0.99);

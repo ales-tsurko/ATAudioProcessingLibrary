@@ -13,7 +13,7 @@ namespace ataudioprocessing {
    void FIRLP::init(sample_t sampleRate,
                     int chnum,
                     int blockSize,
-                    sample_t cuttoff,
+                    sample_t cutoff,
                     int kernelSize) {
 
        Generator::init(sampleRate, chnum, blockSize);
@@ -26,19 +26,18 @@ namespace ataudioprocessing {
        ringBufSize = (1<<int(ceil(log2(kernelSize+blockSize))))-1;
        ringBuf.resize(ringBufSize);
 
-       cuttoffRatio = cuttoff / sampleRate;
+       cutoffRatio = cutoff / sampleRate;
 
        // SINC
        sample_t sinc[kernelSize];
-       sample_t twopi = M_PI * 2.0;
        int halfSize = kernelSize/2;
 
        for (int i = 0; i < kernelSize; ++i) {
            if (i - halfSize != 0) {
-               sample_t incr = twopi * cuttoffRatio * sample_t(i-halfSize);
+               sample_t incr = twopi * cutoffRatio * sample_t(i-halfSize);
                sinc[i] = sinf(incr) / sample_t(i-halfSize);
            } else {
-               sinc[i] = twopi * cuttoffRatio;
+               sinc[i] = twopi * cutoffRatio;
            }
        }
 
