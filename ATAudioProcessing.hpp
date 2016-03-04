@@ -14,6 +14,7 @@
 #include "filters/SVF.hpp"
 #include "filters/OnePoleLPHP.hpp"
 #include "filters/TwoPoleSVFS.hpp"
+#include "filters/BiquadSVF.hpp"
 /* Generators */
 #include "generators/ParabolicWM.hpp"
 #include "generators/TriLFOStereo.hpp"

@@ -13,22 +13,13 @@
 #import "ShatteringFilter.hpp"
 #import "../../delay/SingleDelay.hpp"
 #import "../../filters/OnePoleLPHP.hpp"
+#import "../../filters/BiquadSVF.hpp"
 #import <vector>
 #import <Accelerate/Accelerate.h>
 
 namespace ataudioprocessing {
    class SpringReverb : public Generator {
-       OnePoleLPHP highAttenuationFilter;
-       OnePoleLPHP transducerFilter;
-       ShatteringFilter shattering;
-       SingleDelay delay;
-
-       sample_t suspension;
-       sample_t highAttenuation; // in Hz
-       double correctionEQCoeffs[25];
-
    public:
-       sample_vec_t output;
 
        void init(sample_t sr, int chnum, int blockSize);
 
@@ -42,6 +33,17 @@ namespace ataudioprocessing {
                                    sample_t size,
                                    sample_t density,
                                    sample_t drywet);
+       
+   private:
+       OnePoleLPHP highAttenuationFilter;
+       OnePoleLPHP transducerFilter;
+       ShatteringFilter shattering;
+       SingleDelay delay;
+       
+       sample_t suspension;
+       sample_t highAttenuation; // in Hz
+       double correctionEQCoeffs[25];
+       std::vector<BiquadSVF> correctionEQ;
    };
 } /* ataudioprocessing */
 

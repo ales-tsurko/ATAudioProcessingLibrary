@@ -4,6 +4,7 @@
 //  Created by Aliaksandr Tsurko on 12.01.16.
 //  Copyright © 2016 Aliaksandr Tsurko. All rights reserved.
 //
+// TODO: This filter should be replaced with BiquadSVF
 
 #ifndef SVF_hpp
 #define SVF_hpp
