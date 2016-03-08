@@ -8,6 +8,10 @@
 #import "SpringReverb.hpp"
 
 namespace ataudioprocessing {
+    SpringReverb::~SpringReverb() {
+        vDSP_biquad_DestroySetup(filterSetup);
+    }
+    
    void SpringReverb::init(sample_t sr, int chnum, int blockSize) {
        Generator::init(sr, chnum, blockSize);
 
@@ -44,6 +48,8 @@ namespace ataudioprocessing {
                   &correctionEQ[n].getCoefficients()[0],
                   numberOfFilters*sizeof(double));
        }
+       
+       filterSetup = vDSP_biquad_CreateSetup(correctionEQCoeffs, 5);
    }
 
    sample_vec_t SpringReverb::calculateBlock(sample_vec_t input,
@@ -67,12 +73,9 @@ namespace ataudioprocessing {
 
            wet[frameIndex] = delay.generateSample(shattering.output);
        }
-
-       vDSP_biquad_Setup filterSetup = vDSP_biquad_CreateSetup(correctionEQCoeffs,
-                                                               5);
+       
        sample_t delayBuff[calculationBlockSize*calculationBlockSize*5];
        vDSP_biquad(filterSetup, delayBuff, wet, 1, wet, 1, calculationBlockSize);
-       vDSP_biquad_DestroySetup(filterSetup);
 
        // Dry/Wet mixing
        sample_t newDryWet = clamp(drywet, sample_t(0.0), sample_t(1.0));
