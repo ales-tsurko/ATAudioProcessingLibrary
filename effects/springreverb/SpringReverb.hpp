@@ -20,8 +20,6 @@
 namespace ataudioprocessing {
    class SpringReverb : public Generator {
    public:
-       
-       ~SpringReverb();
 
        void init(sample_t sr, int chnum, int blockSize);
 
@@ -46,7 +44,6 @@ namespace ataudioprocessing {
        sample_t highAttenuation; // in Hz
        double correctionEQCoeffs[25];
        std::vector<BiquadSVF> correctionEQ;
-       vDSP_biquad_Setup filterSetup = NULL;
    };
 } /* ataudioprocessing */
 
