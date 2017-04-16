@@ -1,4 +1,4 @@
-A collection of high performance unit generators and functions for DSP programming.
+A ready-to-use collection of high performance unit generators and functions for DSP programming.
 
 Depends on Apple's Accelerate framework, so iOS and macOS only.
 
@@ -36,3 +36,84 @@ TriLFOStereo
 LFO
 
 ### Functions
+midiToFreq(noteNumber)
+ 
+frequencyToMIDI(freq)
+    
+clamp(input, low, high)
+    
+threePointShaper(in, start, mid, end)
+    
+twoPointShaper(in, outStart, outEnd)
+
+linearToLog(input, minIn, maxIn, minOut, maxOut)
+    
+dBToAmp(input)
+
+## Usage
+Link against `Accelerate.framework`, then include `ATAudioProcessing.hpp`.
+
+Use the `.calculateBlock` method, then copy the `.output` into buffer.
+
+
+The process function in a subclass of Apple's `DSPKernel` will look like this:
+
+
+```cpp
+// The code is looking complex, but calculation done per vectorized block, 
+// so it's quite outperformer the sample-by-sample approach.
+
+// ParabolicWM oscillator;
+// oscillator.init(sampleRate, channelCount, calculationBlockSize, oversamplingFactor);
+
+void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
+    AudioBuffer *out = outBufferListPtr->mBuffers;
+    
+    for (int frameOffset = 0; frameOffset < frameCount; frameOffset+=calculationBlockSize) {
+        // to improve performance per block calculation is used
+        
+        //
+        // Fill the rest of the output from the previous iteration
+        // (in the case of variable framerate)
+        //
+        
+        if (frameCount - frameOffset < preGenWriteIndex) {
+            preGenWriteIndex = frameCount - frameOffset;
+        }
+        
+        if (preGenWriteIndex != 0) {
+            for (int channel = 0; channel < numberOfChannels; ++channel) {
+                sample_t *outChannel = (sample_t *)out[channel].mData;
+                memcpy(outChannel+frameOffset, &amp.output[channel][postGenWriteIndex],
+                       preGenWriteIndex*sizeof(sample_t));
+            }
+        }
+        
+        if (preGenWriteIndex + frameOffset == frameCount) {
+            postGenWriteIndex += preGenWriteIndex;
+            break;
+
+        //
+        // calculate the block
+        // here should be your DSP
+        //
+        oscillator.calculateBlock(440, 0.5, 1);
+        
+        //
+        // copy the output
+        //
+        if (frameCount - frameOffset < calculationBlockSize) {
+            postGenWriteIndex = frameCount - frameOffset - preGenWriteIndex;
+        }
+
+        for (int channel = 0; channel < numberOfChannels; ++channel) {
+            sample_t *outChannel = (sample_t *)out[channel].mData;
+            memcpy(outChannel+frameOffset+preGenWriteIndex, &oscillator.output[channel][0],
+                postGenWriteIndex*sizeof(sample_t));
+        }
+    }
+    
+    preGenWriteIndex = calculationBlockSize - postGenWriteIndex;
+}
+
+```
