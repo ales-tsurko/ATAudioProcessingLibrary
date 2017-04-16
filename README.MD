@@ -84,7 +84,7 @@ void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) overr
         if (preGenWriteIndex != 0) {
             for (int channel = 0; channel < numberOfChannels; ++channel) {
                 sample_t *outChannel = (sample_t *)out[channel].mData;
-                memcpy(outChannel+frameOffset, &amp.output[channel][postGenWriteIndex],
+                memcpy(outChannel+frameOffset, &oscillator.output[channel][postGenWriteIndex],
                        preGenWriteIndex*sizeof(sample_t));
             }
         }
