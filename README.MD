@@ -92,6 +92,7 @@ void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) overr
         if (preGenWriteIndex + frameOffset == frameCount) {
             postGenWriteIndex += preGenWriteIndex;
             break;
+        }
 
         //
         // calculate the block
