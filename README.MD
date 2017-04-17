@@ -35,7 +35,7 @@ TriLFOStereo
 
 LFO
 
-### Functions
+### Utility
 midiToFreq(noteNumber)
  
 frequencyToMIDI(freq)
