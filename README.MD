@@ -1,6 +1,6 @@
-A ready-to-use collection of high performance unit generators and functions for DSP programming.
+A ready-to-use collection of high performance unit generators and utility functions for DSP programming.
 
-Depends on Apple's Accelerate framework, so iOS and macOS only.
+Depends on Apple's Accelerate framework, so apple platforms only.
 
 ## Content
 ### Ugens
@@ -51,17 +51,17 @@ linearToLog(input, minIn, maxIn, minOut, maxOut)
 dBToAmp(input)
 
 ## Usage
-Link against `Accelerate.framework`, then include `ATAudioProcessing.hpp`.
+Link `Accelerate.framework`, then include `ATAudioProcessing.hpp`.
 
 Use the `.calculateBlock` method, then copy the `.output` into buffer.
 
 
-The process function in a subclass of Apple's `DSPKernel` will look like this:
+The example of a process function will look like this:
 
 
 ```cpp
-// The code is looking complex, but calculation done per vectorized block, 
-// so it's quite outperformer the sample-by-sample approach.
+// The code looks complex, but it's calculated per vectorized block, 
+// so it quite outperforms the sample-by-sample approach.
 
 // ParabolicWM oscillator;
 // oscillator.init(sampleRate, channelCount, calculationBlockSize, oversamplingFactor);
@@ -70,11 +70,9 @@ void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) overr
     AudioBuffer *out = outBufferListPtr->mBuffers;
     
     for (int frameOffset = 0; frameOffset < frameCount; frameOffset+=calculationBlockSize) {
-        // to improve performance per block calculation is used
-        
         //
         // Fill the rest of the output from the previous iteration
-        // (in the case of variable framerate)
+        // (to prevent problems, which may occur with variable framerate)
         //
         
         if (frameCount - frameOffset < preGenWriteIndex) {
@@ -95,13 +93,13 @@ void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) overr
         }
 
         //
-        // calculate the block
-        // here should be your DSP
+        // block calculation
+        // put here your DSP part
         //
         oscillator.calculateBlock(440, 0.5, 1);
         
         //
-        // copy the output
+        // copying to the output
         //
         if (frameCount - frameOffset < calculationBlockSize) {
             postGenWriteIndex = frameCount - frameOffset - preGenWriteIndex;
